@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>เที่ยวบางแสน | Bangsaen Travel</title>
+    
+    <!-- Google Fonts: Mali (ฟอนต์ลายมือน่ารัก) -->
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- ตั้งค่าธีมสี -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Mali', 'cursive'],
+                        display: ['Mali', 'cursive'],
+                    },
+                    colors: {
+                        sea: {
+                            light: '#E0F7FA', // สีน้ำตื้น
+                            DEFAULT: '#06b6d4', // สีน้ำทะเลสดใส
+                            dark: '#0e7490', // สีน้ำลึก
+                        },
+                        sand: '#fdfbf7', // สีทรายขาว
+                        coral: '#ff7e5f', // สีปะการัง
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Icon Library (Phosphor Icons) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* CSS เพิ่มเติม */
+        body {
+            background-color: #f0f9ff;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent; /* ลบสีไฮไลท์เวลาแตะบนมือถือ */
+        }
+        
+        /* Custom Scrollbar ให้เหมือนหน้าอื่นๆ */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #bae6fd; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.98); /* ปรับให้ทึบขึ้นเล็กน้อย */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-top: env(safe-area-inset-top); /* รองรับ iPhone จอแหว่ง */
+        }
+
+        .hero-text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(6, 182, 212, 0.15), 0 10px 10px -5px rgba(6, 182, 212, 0.1);
+        }
+
+        /* Waves Animation */
+        .waves-box {
+            position: absolute;
+            bottom: -1px;
+            width: 100%;
+            height: 100px;
+            min-height: 100px;
+            max-height: 150px;
+            z-index: 20;
+        }
+        
+        .parallax > use {
+            animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+        }
+        .parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; }
+        .parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; }
+        .parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; }
+        .parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; }
+        
+        @keyframes move-forever {
+            0% { transform: translate3d(-90px,0,0); }
+            100% { transform: translate3d(85px,0,0); }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (min-width: 768px) {
+            .waves-box { height: 150px; }
+        }
+    </style>
+</head>
+<body class="text-slate-700 antialiased">
+
+    <!-- Navbar -->
+    <header class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group" onclick="window.scrollTo(0,0); return false;">
+                <i class="ph-fill ph-waves text-3xl text-sea-DEFAULT group-hover:animate-pulse"></i>
+                <span class="text-2xl font-bold bg-gradient-to-r from-sea-dark to-sea-DEFAULT bg-clip-text text-transparent font-display">
+                    Bangsaen
+                </span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-slate-600">
+                <a href="#" onclick="window.scrollTo(0,0); return false;" class="hover:text-sea-DEFAULT transition-colors">หน้าแรก</a>
+                
+                <!-- Dropdown -->
+                <div class="relative group">
+                    <button class="flex items-center gap-1 hover:text-sea-DEFAULT transition-colors py-2">
+                        สถานที่ท่องเที่ยว <i class="ph-bold ph-caret-down"></i>
+                    </button>
+                    <!-- Dropdown Content -->
+                    <div class="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 overflow-hidden z-50">
+                        <a href="bangsaen-beach.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors border-b border-slate-50">หาดบางแสน</a>
+                        <a href="wonnapa.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors border-b border-slate-50">หาดวอนนภา</a>
+                        <a href="khao-sam-muk.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors border-b border-slate-50">เขาสามมุข</a>
+                        <a href="marine-museum.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors border-b border-slate-50">พิพิธภัณฑ์สัตว์น้ำ</a>
+                        <a href="walking-street.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors border-b border-slate-50">ถนนคนเดิน</a>
+                        <a href="fish-market.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors border-b border-slate-50">ตลาดปลาบางแสน</a>
+                        <a href="park-in-market.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors border-b border-slate-50">Park In</a>
+                        <a href="wonna-park-market.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors border-b border-slate-50">ตลาดนัดวอนนา</a>
+                        <a href="samanuk-shrine.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors border-b border-slate-50">ศาลเจ้าแม่สามมุข</a>
+                        <a href="laem-taen.html" class="block px-4 py-3 hover:bg-sea-light hover:text-sea-dark transition-colors">แหลมแท่น</a>
+                    </div>
+                </div>
+
+                <!-- Updated Button Color (Green for Line) -->
+                <a href="https://line.me/ti/p/" target="_blank" class="px-5 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-full hover:shadow-lg hover:shadow-green-500/30 transition-all transform hover:-translate-y-0.5 flex items-center gap-2 font-bold tracking-wide">
+                    <i class="ph-bold ph-chats-circle text-lg"></i> ติดต่อแอดมิน
+                </a>
+            </nav>
+
+            <!-- Mobile Hamburger -->
+            <button id="hamburgerBtn" class="md:hidden text-2xl text-slate-700 hover:text-sea-DEFAULT focus:outline-none p-2">
+                <i class="ph-bold ph-list" id="menuIcon"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 absolute w-full left-0 top-full shadow-2xl h-auto max-h-[85vh] overflow-y-auto z-50">
+            <div class="flex flex-col p-4 space-y-2 font-medium text-slate-800">
+                <a href="#" onclick="window.scrollTo(0,0); return false;" class="mobile-link p-3 rounded-lg hover:bg-sea-light hover:text-sea-dark flex items-center gap-3">
+                    <i class="ph-fill ph-house"></i> หน้าแรก
+                </a>
+                
+                <div class="space-y-1 pt-2">
+                    <div class="text-slate-500 text-xs uppercase tracking-wider px-3 pb-1 font-bold">สถานที่ท่องเที่ยว</div>
+                    <a href="bangsaen-beach.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">หาดบางแสน</a>
+                    <a href="wonnapa.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">หาดวอนนภา</a>
+                    <a href="khao-sam-muk.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">เขาสามมุข</a>
+                    <a href="marine-museum.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">พิพิธภัณฑ์สัตว์น้ำ</a>
+                    <a href="walking-street.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">ถนนคนเดิน</a>
+                    <a href="fish-market.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">ตลาดปลาบางแสน</a>
+                    <a href="park-in-market.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">Park In</a>
+                    <a href="wonna-park-market.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">ตลาดนัดวอนนา</a>
+                    <a href="samanuk-shrine.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">ศาลเจ้าแม่สามมุข</a>
+                    <a href="laem-taen.html" class="mobile-link block p-3 pl-4 border-l-4 border-transparent hover:border-sea-DEFAULT hover:bg-sea-light rounded-r-lg transition-all">แหลมแท่น</a>
+                </div>
+
+                <!-- Updated Mobile Button Color (Green for Line) -->
+                <a href="https://line.me/ti/p/" target="_blank" class="mobile-link p-3 mt-2 rounded-lg bg-gradient-to-r from-green-400 to-green-600 text-white flex items-center gap-3 font-bold shadow-md">
+                    <i class="ph-bold ph-chats-circle"></i> ติดต่อแอดมิน
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative h-[90vh] md:h-screen flex items-center justify-center overflow-hidden">
+        <!-- Video Background Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-sea-dark/60 z-10"></div>
+        
+        <!-- Video Background with iOS Fixes (playsinline, webkit-playsinline) -->
+        <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline poster="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop" class="absolute w-full h-full object-cover z-0">
+            <source src="video/all.mp4" type="video/mp4">
+            <!-- Image Fallback -->
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop" alt="Sea Background" class="w-full h-full object-cover">
+        </video>
+
+        <!-- Content -->
+        <div class="relative z-20 text-center px-4 max-w-4xl mx-auto mt-16 reveal active">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-sm mb-4 animate-bounce">
+                🌴 ยินดีต้อนรับสู่ชลบุรี
+            </span>
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 hero-text-shadow leading-normal font-display">
+                เที่ยวบางแสน<br>
+                <!-- แก้ไขสระลอย/จม โดยเพิ่ม Padding และ Line-height -->
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-white inline-block py-3 leading-relaxed">แดนสุขขี</span>
+            </h1>
+            <p class="text-lg md:text-2xl text-slate-100 mb-8 max-w-2xl mx-auto font-light drop-shadow-md">
+                สัมผัสลมทะเล ชมพระอาทิตย์ตก และอาหารทะเลสดใหม่ ใกล้กรุงเทพฯ เพียงนิดเดียว
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="#recommend" class="px-8 py-3 bg-white text-sea-dark font-bold rounded-full hover:bg-sea-light transition-all transform hover:scale-105 shadow-lg">
+                    ดูสถานที่แนะนำ
+                </a>
+            </div>
+        </div>
+
+        <!-- Animated Wave SVG -->
+        <div class="waves-box">
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                <defs>
+                    <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                </defs>
+                <g class="parallax">
+                    <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(253, 251, 247, 0.7)" />
+                    <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(253, 251, 247, 0.5)" />
+                    <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(253, 251, 247, 0.3)" />
+                    <use xlink:href="#gentle-wave" x="48" y="7" fill="#fdfbf7" />
+                </g>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <main class="bg-sand relative z-10 pb-20 pt-10" id="recommend">
+        <div class="container mx-auto px-4">
+            
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-3 relative inline-block">
+                    สถานที่ยอดฮิต
+                    <div class="absolute -bottom-2 left-0 w-full h-1.5 bg-sea-DEFAULT rounded-full opacity-60"></div>
+                </h2>
+                <p class="text-slate-500 mt-4">จุดเช็คอินที่ห้ามพลาดเมื่อมาเยือนบางแสน</p>
+            </div>
+
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <a href="bangsaen-beach.html" class="group block card-link reveal">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 card-hover h-full flex flex-col">
+                        <div class="relative overflow-hidden h-64">
+                            <!-- Image Placeholder -->
+                            <img src="image/bangsaen-beach.jpg" 
+                                 alt="หาดบางแสน" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute top-4 right-4 bg-white/90 backdrop-blur text-sea-dark text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                ยอดนิยม 🔥
+                            </div>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-sea-DEFAULT transition-colors">ชายหาดบางแสน</h3>
+                            <p class="text-slate-500 text-sm mb-4 flex-1">ทะเลใกล้กรุงเทพฯ ที่ได้รับการปรับปรุงภูมิทัศน์ใหม่ น้ำใส หาดทรายสะอาด เหมาะแก่การพักผ่อน</p>
+                            <div class="flex items-center text-sea-dark text-sm font-semibold">
+                                อ่านเพิ่มเติม <i class="ph-bold ph-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Card 2 -->
+                <a href="khao-sam-muk.html" class="group block card-link reveal" style="transition-delay: 100ms;">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 card-hover h-full flex flex-col">
+                        <div class="relative overflow-hidden h-64">
+                            <img src="image/khao-sam-muk.jpg" 
+                                 alt="เขาสามมุข" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-sea-DEFAULT transition-colors">เขาสามมุข</h3>
+                            <p class="text-slate-500 text-sm mb-4 flex-1">จุดชมวิวพาโนรามา ไหว้เจ้าแม่สามมุข และแวะคาเฟ่สุดชิคริมหน้าผาพร้อมฝูงลิงเจ้าถิ่น</p>
+                            <div class="flex items-center text-sea-dark text-sm font-semibold">
+                                อ่านเพิ่มเติม <i class="ph-bold ph-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Card 3 -->
+                <a href="fish-market.html" class="group block card-link reveal" style="transition-delay: 200ms;">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-slate-100 card-hover h-full flex flex-col">
+                        <div class="relative overflow-hidden h-64">
+                            <img src="image/fish-market.jpg" 
+                                 alt="ตลาดปลาบางแสน" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute top-4 right-4 bg-coral text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                ถ่ายรูปสวย 📸
+                            </div>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2 group-hover:text-sea-DEFAULT transition-colors">ตลาดปลาบางแสน</h3>
+                            <p class="text-slate-500 text-sm mb-4 flex-1">สไตล์ญี่ปุ่นสุดคิวท์ อาหารทะเลสดใหม่ และมุมถ่ายรูปเก๋ๆ เหมือนอยู่ญี่ปุ่นจริงๆ</p>
+                            <div class="flex items-center text-sea-dark text-sm font-semibold">
+                                อ่านเพิ่มเติม <i class="ph-bold ph-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 relative overflow-hidden">
+        <!-- Decoration Wave Top -->
+        <div class="absolute top-0 left-0 w-full overflow-hidden leading-0 transform rotate-180 z-10">
+            <svg class="relative block w-[calc(100%+1.3px)] h-[50px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-sand"></path>
+            </svg>
+        </div>
+
+        <div class="container mx-auto px-4 pt-20 pb-10 text-center relative z-20">
+            <div class="flex items-center justify-center gap-2 mb-6">
+                <i class="ph-fill ph-waves text-3xl text-sea-DEFAULT"></i>
+                <span class="text-2xl font-bold text-white font-display">Bangsaen</span>
+            </div>
+            
+            <div class="flex justify-center gap-6 mb-8">
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-sea-DEFAULT hover:text-white transition-all transform hover:scale-110">
+                    <i class="ph-fill ph-facebook-logo text-xl"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-pink-500 hover:text-white transition-all transform hover:scale-110">
+                    <i class="ph-fill ph-instagram-logo text-xl"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-sky-500 hover:text-white transition-all transform hover:scale-110">
+                    <i class="ph-fill ph-twitter-logo text-xl"></i>
+                </a>
+            </div>
+
+            <p class="text-sm text-slate-500">
+                © 2025 เที่ยวบางแสน | Designed with 🩵 for Education
+            </p>
+        </div>
+    </footer>
+
+    <!-- Script -->
+    <script>
+        // Force video play for iOS (Low Power Mode fix)
+        document.addEventListener('DOMContentLoaded', function() {
+            var video = document.getElementById('heroVideo');
+            if (video) {
+                video.play().catch(function(error) {
+                    console.log("Video play failed (likely blocked or low power mode):", error);
+                });
+            }
+        });
+
+        // Toggle Mobile Menu
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const menu = document.getElementById('mobileMenu');
+        const icon = document.getElementById('menuIcon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMobileMenu() {
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.remove('ph-list');
+                icon.classList.add('ph-x');
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('ph-x');
+                icon.classList.add('ph-list');
+            }
+        }
+
+        // Event Listener for Hamburger
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menu.classList.contains('hidden') && !menu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                toggleMobileMenu();
+            }
+        });
+
+        // Close menu when clicking a link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!menu.classList.contains('hidden')) {
+                    toggleMobileMenu();
+                }
+            });
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+                navbar.classList.replace('py-3', 'py-2');
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.classList.replace('py-2', 'py-3');
+            }
+        });
+
+        // Scroll Reveal Animation Script
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+    </script>
+</body>
+</html>
